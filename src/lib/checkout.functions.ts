@@ -45,7 +45,7 @@ export const createCheckout = createServerFn({ method: "POST" })
     };
 
     let total = 0;
-    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = data.items.map((it) => {
+    const lineItems = data.items.map((it) => {
       const unit = priceMap[it.type];
       if (!unit || unit <= 0) throw new Error(`${it.type} tickets not available`);
       total += unit * it.quantity;
