@@ -14,16 +14,245 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      events: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          event_date: string
+          id: string
+          poster_url: string | null
+          price_children: number
+          price_regular: number
+          price_vip: number
+          price_vvip: number
+          qty_children: number
+          qty_regular: number
+          qty_vip: number
+          qty_vvip: number
+          status: Database["public"]["Enums"]["event_status"]
+          title: string
+          updated_at: string
+          venue: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          event_date: string
+          id?: string
+          poster_url?: string | null
+          price_children?: number
+          price_regular?: number
+          price_vip?: number
+          price_vvip?: number
+          qty_children?: number
+          qty_regular?: number
+          qty_vip?: number
+          qty_vvip?: number
+          status?: Database["public"]["Enums"]["event_status"]
+          title: string
+          updated_at?: string
+          venue: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          event_date?: string
+          id?: string
+          poster_url?: string | null
+          price_children?: number
+          price_regular?: number
+          price_vip?: number
+          price_vvip?: number
+          qty_children?: number
+          qty_regular?: number
+          qty_vip?: number
+          qty_vvip?: number
+          status?: Database["public"]["Enums"]["event_status"]
+          title?: string
+          updated_at?: string
+          venue?: string
+        }
+        Relationships: []
+      }
+      orders: {
+        Row: {
+          created_at: string
+          currency: string
+          event_id: string
+          id: string
+          status: Database["public"]["Enums"]["order_status"]
+          stripe_session_id: string | null
+          total_amount: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          currency?: string
+          event_id: string
+          id?: string
+          status?: Database["public"]["Enums"]["order_status"]
+          stripe_session_id?: string | null
+          total_amount: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          currency?: string
+          event_id?: string
+          id?: string
+          status?: Database["public"]["Enums"]["order_status"]
+          stripe_session_id?: string | null
+          total_amount?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      tickets: {
+        Row: {
+          attendee_email: string | null
+          attendee_name: string | null
+          attendee_phone: string | null
+          checked_in: boolean
+          checked_in_at: string | null
+          created_at: string
+          event_id: string
+          id: string
+          order_id: string
+          price: number
+          ticket_number: string
+          ticket_type: Database["public"]["Enums"]["ticket_type"]
+          user_id: string
+        }
+        Insert: {
+          attendee_email?: string | null
+          attendee_name?: string | null
+          attendee_phone?: string | null
+          checked_in?: boolean
+          checked_in_at?: string | null
+          created_at?: string
+          event_id: string
+          id?: string
+          order_id: string
+          price: number
+          ticket_number: string
+          ticket_type: Database["public"]["Enums"]["ticket_type"]
+          user_id: string
+        }
+        Update: {
+          attendee_email?: string | null
+          attendee_name?: string | null
+          attendee_phone?: string | null
+          checked_in?: boolean
+          checked_in_at?: string | null
+          created_at?: string
+          event_id?: string
+          id?: string
+          order_id?: string
+          price?: number
+          ticket_number?: string
+          ticket_type?: Database["public"]["Enums"]["ticket_type"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tickets_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tickets_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
+      event_status: "draft" | "published" | "cancelled" | "completed"
+      order_status: "pending" | "paid" | "failed" | "refunded"
+      ticket_type: "children" | "regular" | "vip" | "vvip"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +379,11 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+      event_status: ["draft", "published", "cancelled", "completed"],
+      order_status: ["pending", "paid", "failed", "refunded"],
+      ticket_type: ["children", "regular", "vip", "vvip"],
+    },
   },
 } as const
