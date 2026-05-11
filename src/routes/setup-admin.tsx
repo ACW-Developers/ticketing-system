@@ -36,7 +36,6 @@ function SetupAdmin() {
           phone: String(fd.get("phone") ?? ""),
           email: String(fd.get("email") ?? ""),
           password: String(fd.get("password") ?? ""),
-          setup_token: String(fd.get("setup_token") ?? ""),
         },
       });
       toast.success("Admin created. You can sign in now.");
