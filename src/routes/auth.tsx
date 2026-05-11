@@ -78,10 +78,10 @@ function Auth() {
       {/* Left: hero image */}
       <div className="relative hidden lg:block overflow-hidden">
         <img src={authHero} alt="Traveler holding tickets" className="absolute inset-0 h-full w-full object-cover" />
-        {/* Darken overlay so text is always readable */}
-        <div className="absolute inset-0 bg-black/55" />
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/40 via-transparent to-accent/30 mix-blend-multiply" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/40" />
+        {/* Subtle brand tint across the image */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/25 via-transparent to-accent/20 mix-blend-multiply" />
+        {/* Darken only the lower portion so bottom text stays readable */}
+        <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/75 via-black/40 to-transparent" />
         <div className="relative h-full flex flex-col justify-between p-12 text-white">
           <div className="flex items-center gap-2.5">
             <img src={logo} alt="" className="h-9 w-9 rounded-lg bg-white/90 p-1" />
