@@ -11,13 +11,15 @@ function AdminPayments() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    supabase.from("orders").select("*, events(title), profiles!inner(full_name, email)").order("created_at", { ascending: false }).limit(100)
-      .then(({ data }) => { setOrders(data ?? []); setLoading(false); })
-      .catch(() => {
-        // fallback without profile join
-        supabase.from("orders").select("*, events(title)").order("created_at", { ascending: false }).limit(100)
-          .then(({ data }) => { setOrders(data ?? []); setLoading(false); });
-      });
+    (async () => {
+      const { data } = await supabase
+        .from("orders")
+        .select("*, events(title)")
+        .order("created_at", { ascending: false })
+        .limit(100);
+      setOrders(data ?? []);
+      setLoading(false);
+    })();
   }, []);
 
   if (loading) return <div className="flex justify-center py-20"><Loader2 className="animate-spin text-primary" /></div>;
