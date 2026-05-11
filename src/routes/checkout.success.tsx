@@ -37,7 +37,7 @@ function CheckoutSuccess() {
           {state === "verifying" && (<><Loader2 className="h-12 w-12 mx-auto animate-spin text-primary mb-4" /><p>Confirming your payment…</p></>)}
           {state === "paid" && (
             <>
-              <div className="flex h-16 w-16 mx-auto items-center justify-center rounded-full bg-primary/15 text-primary mb-4 glow-neon">
+              <div className="flex h-16 w-16 mx-auto items-center justify-center rounded-full bg-primary/15 text-primary mb-4 glow-primary">
                 <CheckCircle2 className="h-8 w-8" />
               </div>
               <h1 className="font-display text-3xl font-bold mb-2">You're in.</h1>
@@ -50,7 +50,7 @@ function CheckoutSuccess() {
                   </div>
                 ))}
               </div>
-              <Link to="/my-tickets"><Button className="glow-neon">View my tickets</Button></Link>
+              <Link to="/my-tickets"><Button className="glow-primary">View my tickets</Button></Link>
             </>
           )}
           {state === "pending" && <><p>Payment is still processing. Refresh in a moment.</p></>}

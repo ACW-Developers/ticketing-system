@@ -86,7 +86,7 @@ function AdminEvents() {
         <h1 className="font-display text-3xl font-bold">Events</h1>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button className="glow-neon" onClick={startNew}><Plus className="mr-1 h-4 w-4" /> New event</Button>
+            <Button className="glow-primary" onClick={startNew}><Plus className="mr-1 h-4 w-4" /> New event</Button>
           </DialogTrigger>
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader><DialogTitle>{form.id ? "Edit event" : "Create event"}</DialogTitle></DialogHeader>
@@ -123,7 +123,7 @@ function AdminEvents() {
                   <option value="cancelled">Cancelled</option><option value="completed">Completed</option>
                 </select>
               </div>
-              <Button type="submit" className="w-full glow-neon" disabled={saving}>{saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Save</Button>
+              <Button type="submit" className="w-full glow-primary" disabled={saving}>{saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Save</Button>
             </form>
           </DialogContent>
         </Dialog>

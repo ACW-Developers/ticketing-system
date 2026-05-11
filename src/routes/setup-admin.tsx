@@ -67,7 +67,7 @@ function SetupAdmin() {
       <div className="container mx-auto px-4 py-16 flex justify-center">
         <div className="w-full max-w-md surface-card rounded-2xl p-8">
           <div className="flex flex-col items-center mb-6">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-primary-foreground glow-neon mb-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-primary-foreground glow-primary mb-3">
               <ShieldCheck className="h-6 w-6" />
             </div>
             <h1 className="font-display text-2xl font-bold">Create the first admin</h1>
@@ -96,7 +96,7 @@ function SetupAdmin() {
               <Input id="setup_token" name="setup_token" type="password" required />
               <p className="text-xs text-muted-foreground mt-1">Provided by the project owner. Required to authorize this one-time setup.</p>
             </div>
-            <Button type="submit" className="w-full glow-neon" disabled={submitting}>
+            <Button type="submit" className="w-full glow-primary" disabled={submitting}>
               {submitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Create admin
             </Button>
           </form>
