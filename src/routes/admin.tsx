@@ -1,8 +1,9 @@
-import { createFileRoute, Outlet, useNavigate, Link, useLocation } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { Layout } from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
-import { Loader2, BarChart3, CalendarDays, Users } from "lucide-react";
+import { Loader2 } from "lucide-react";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { AdminSidebar, AdminTopbar } from "@/components/AdminSidebar";
 
 export const Route = createFileRoute("/admin")({
   component: AdminLayout,
@@ -12,7 +13,6 @@ export const Route = createFileRoute("/admin")({
 function AdminLayout() {
   const { user, isAdmin, loading } = useAuth();
   const nav = useNavigate();
-  const loc = useLocation();
 
   useEffect(() => {
     if (loading) return;
@@ -20,36 +20,25 @@ function AdminLayout() {
     else if (!isAdmin) nav({ to: "/events" });
   }, [loading, user, isAdmin, nav]);
 
-  if (loading || !user || !isAdmin)
-    return <Layout><div className="flex justify-center py-20"><Loader2 className="animate-spin text-primary" /></div></Layout>;
-
-  const tabs = [
-    { to: "/admin", label: "Dashboard", icon: BarChart3, exact: true },
-    { to: "/admin/events", label: "Events", icon: CalendarDays },
-    { to: "/admin/attendees", label: "Attendees", icon: Users },
-  ];
+  if (loading || !user || !isAdmin) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <Loader2 className="animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
-    <Layout>
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center gap-1 border-b border-border mb-8 -mx-1 overflow-x-auto">
-          {tabs.map((t) => {
-            const active = t.exact ? loc.pathname === t.to : loc.pathname.startsWith(t.to);
-            return (
-              <Link
-                key={t.to}
-                to={t.to}
-                className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
-                  active ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                <t.icon className="h-4 w-4" /> {t.label}
-              </Link>
-            );
-          })}
+    <SidebarProvider>
+      <div className="flex min-h-screen w-full bg-muted/30">
+        <AdminSidebar />
+        <div className="flex-1 flex flex-col min-w-0">
+          <AdminTopbar />
+          <main className="flex-1 p-4 sm:p-6 lg:p-8">
+            <Outlet />
+          </main>
         </div>
-        <Outlet />
       </div>
-    </Layout>
+    </SidebarProvider>
   );
 }

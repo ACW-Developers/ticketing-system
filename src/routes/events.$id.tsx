@@ -128,7 +128,7 @@ function EventDetail() {
                 <span className="font-display text-2xl font-bold">${total.toFixed(2)}</span>
               </div>
 
-              <Button className="w-full mt-4 glow-neon h-11" disabled={submitting || totalQty === 0} onClick={handleCheckout}>
+              <Button className="w-full mt-4 glow-primary h-11" disabled={submitting || totalQty === 0} onClick={handleCheckout}>
                 {submitting ? <Loader2 className="animate-spin h-4 w-4" /> : user ? "Checkout" : "Sign in to checkout"}
               </Button>
               <p className="text-xs text-muted-foreground text-center mt-3">Secure payment by Stripe</p>
