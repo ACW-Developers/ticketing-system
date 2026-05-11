@@ -75,14 +75,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "Smarticketing" },
+      { name: "description", content: "Discover events, book in seconds with secure checkout, and walk in with instant QR tickets." },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "Smarticketing" },
+      { property: "og:description", content: "Discover events, book in seconds with secure checkout, and walk in with instant QR tickets." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Smarticketing" },
+      { name: "twitter:description", content: "Discover events, book in seconds with secure checkout, and walk in with instant QR tickets." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/920acb07-381d-46be-8f46-22368fc15698/id-preview-00166a40--4469bf15-9312-4bd3-8fe5-3c491366889d.lovable.app-1778487368852.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/920acb07-381d-46be-8f46-22368fc15698/id-preview-00166a40--4469bf15-9312-4bd3-8fe5-3c491366889d.lovable.app-1778487368852.png" },
     ],
     links: [
       {
