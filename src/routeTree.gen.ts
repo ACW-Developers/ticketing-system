@@ -13,6 +13,7 @@ import { Route as EventsRouteImport } from './routes/events'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as EventsIdRouteImport } from './routes/events.$id'
+import { Route as CheckoutSuccessRouteImport } from './routes/checkout.success'
 
 const EventsRoute = EventsRouteImport.update({
   id: '/events',
@@ -34,17 +35,24 @@ const EventsIdRoute = EventsIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => EventsRoute,
 } as any)
+const CheckoutSuccessRoute = CheckoutSuccessRouteImport.update({
+  id: '/checkout/success',
+  path: '/checkout/success',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/events': typeof EventsRouteWithChildren
+  '/checkout/success': typeof CheckoutSuccessRoute
   '/events/$id': typeof EventsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/events': typeof EventsRouteWithChildren
+  '/checkout/success': typeof CheckoutSuccessRoute
   '/events/$id': typeof EventsIdRoute
 }
 export interface FileRoutesById {
@@ -52,20 +60,28 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/events': typeof EventsRouteWithChildren
+  '/checkout/success': typeof CheckoutSuccessRoute
   '/events/$id': typeof EventsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/events' | '/events/$id'
+  fullPaths: '/' | '/auth' | '/events' | '/checkout/success' | '/events/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/events' | '/events/$id'
-  id: '__root__' | '/' | '/auth' | '/events' | '/events/$id'
+  to: '/' | '/auth' | '/events' | '/checkout/success' | '/events/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth'
+    | '/events'
+    | '/checkout/success'
+    | '/events/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
   EventsRoute: typeof EventsRouteWithChildren
+  CheckoutSuccessRoute: typeof CheckoutSuccessRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -98,6 +114,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EventsIdRouteImport
       parentRoute: typeof EventsRoute
     }
+    '/checkout/success': {
+      id: '/checkout/success'
+      path: '/checkout/success'
+      fullPath: '/checkout/success'
+      preLoaderRoute: typeof CheckoutSuccessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -116,6 +139,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
   EventsRoute: EventsRouteWithChildren,
+  CheckoutSuccessRoute: CheckoutSuccessRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
