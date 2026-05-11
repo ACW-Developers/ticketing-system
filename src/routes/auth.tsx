@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useTheme } from "@/hooks/useTheme";
 import { toast } from "sonner";
-import { Loader2, Mail, Lock, User as UserIcon, Phone, Sun, Moon, Sparkles } from "lucide-react";
+import { Loader2, Mail, Lock, User as UserIcon, Phone, Sun, Moon, Sparkles, Eye, EyeOff } from "lucide-react";
 import { z } from "zod";
 import authHero from "@/assets/auth-hero.jpg";
 import logo from "@/assets/logo.png";
@@ -78,8 +78,10 @@ function Auth() {
       {/* Left: hero image */}
       <div className="relative hidden lg:block overflow-hidden">
         <img src={authHero} alt="Traveler holding tickets" className="absolute inset-0 h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/40 via-primary/20 to-accent/40 mix-blend-multiply" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
+        {/* Darken overlay so text is always readable */}
+        <div className="absolute inset-0 bg-black/55" />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/40 via-transparent to-accent/30 mix-blend-multiply" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/40" />
         <div className="relative h-full flex flex-col justify-between p-12 text-white">
           <div className="flex items-center gap-2.5">
             <img src={logo} alt="" className="h-9 w-9 rounded-lg bg-white/90 p-1" />
@@ -89,10 +91,10 @@ function Auth() {
             <div className="inline-flex items-center gap-1.5 rounded-full bg-white/20 backdrop-blur px-3 py-1 text-xs font-medium">
               <Sparkles className="h-3.5 w-3.5" /> Trusted by thousands of event-goers
             </div>
-            <h2 className="font-display text-4xl xl:text-5xl font-bold leading-[1.05] drop-shadow-lg">
+            <h2 className="font-display text-4xl xl:text-5xl font-bold leading-[1.05] drop-shadow-2xl">
               Your next unforgettable night is one tap away.
             </h2>
-            <p className="text-white/90 text-base leading-relaxed">
+            <p className="text-white/95 text-base leading-relaxed drop-shadow-lg">
               Discover events, book in seconds with secure checkout, and walk in with instant QR tickets.
             </p>
           </div>
@@ -100,54 +102,62 @@ function Auth() {
       </div>
 
       {/* Right: form */}
-      <div className="flex flex-col">
-        <div className="flex items-center justify-between p-4 lg:p-6">
-          <Link to="/auth" className="flex items-center gap-2 lg:hidden">
-            <img src={logo} alt="" className="h-8 w-8 rounded-lg" />
-            <span className="font-display font-bold">Pulse.</span>
-          </Link>
-          <Button variant="ghost" size="icon" onClick={toggle} aria-label="Toggle theme" className="ml-auto">
+      <div className="flex flex-col bg-muted/20">
+        <div className="flex items-center justify-end p-4 lg:p-6">
+          <Button variant="ghost" size="icon" onClick={toggle} aria-label="Toggle theme">
             {theme === "light" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
           </Button>
         </div>
 
         <div className="flex-1 flex items-center justify-center px-6 pb-12">
           <div className="w-full max-w-md">
-            <div className="mb-8">
-              <h1 className="font-display text-3xl font-bold tracking-tight">Welcome to <span className="gradient-primary-text">Pulse</span></h1>
-              <p className="mt-2 text-sm text-muted-foreground">Sign in or create your account to book tickets.</p>
+            {/* Logo above the form */}
+            <div className="flex flex-col items-center mb-6">
+              <div className="h-16 w-16 rounded-2xl bg-background border border-border shadow-sm flex items-center justify-center mb-3">
+                <img src={logo} alt="Pulse Tickets" className="h-10 w-10 rounded-lg" />
+              </div>
+              <span className="font-display text-2xl font-bold tracking-tight">
+                Pulse<span className="text-primary">.</span>
+              </span>
             </div>
 
-            <Tabs defaultValue="signin">
-              <TabsList className="grid w-full grid-cols-2 mb-6 bg-muted/50">
-                <TabsTrigger value="signin">Sign in</TabsTrigger>
-                <TabsTrigger value="signup">Sign up</TabsTrigger>
-              </TabsList>
+            <div className="rounded-2xl border border-border bg-card shadow-xl p-6 sm:p-8">
+              <div className="mb-6 text-center">
+                <h1 className="font-display text-2xl font-bold tracking-tight">Welcome back</h1>
+                <p className="mt-1.5 text-sm text-muted-foreground">Sign in or create your account to book tickets.</p>
+              </div>
 
-              <TabsContent value="signin">
-                <form onSubmit={handleSignIn} className="space-y-4">
-                  <FieldIcon icon={Mail} label="Email" name="email" type="email" required />
-                  <FieldIcon icon={Lock} label="Password" name="password" type="password" required minLength={6} />
-                  <Button type="submit" className="w-full glow-primary h-11" disabled={loading}>
-                    {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Sign in
-                  </Button>
-                </form>
-              </TabsContent>
+              <Tabs defaultValue="signin">
+                <TabsList className="grid w-full grid-cols-2 mb-6 bg-muted/50">
+                  <TabsTrigger value="signin">Sign in</TabsTrigger>
+                  <TabsTrigger value="signup">Sign up</TabsTrigger>
+                </TabsList>
 
-              <TabsContent value="signup">
-                <form onSubmit={handleSignUp} className="space-y-4">
-                  <FieldIcon icon={UserIcon} label="Full name" name="full_name" required maxLength={100} />
-                  <FieldIcon icon={Phone} label="Phone" name="phone" type="tel" required maxLength={20} />
-                  <FieldIcon icon={Mail} label="Email" name="email" type="email" required />
-                  <FieldIcon icon={Lock} label="Password" name="password" type="password" required minLength={6} maxLength={72} />
-                  <Button type="submit" className="w-full glow-primary h-11" disabled={loading}>
-                    {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Create account
-                  </Button>
-                </form>
-              </TabsContent>
-            </Tabs>
+                <TabsContent value="signin">
+                  <form onSubmit={handleSignIn} className="space-y-4">
+                    <FieldIcon icon={Mail} label="Email" name="email" type="email" required />
+                    <PasswordField label="Password" name="password" required minLength={6} />
+                    <Button type="submit" className="w-full glow-primary h-11" disabled={loading}>
+                      {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Sign in
+                    </Button>
+                  </form>
+                </TabsContent>
 
-            <p className="mt-8 text-center text-xs text-muted-foreground">
+                <TabsContent value="signup">
+                  <form onSubmit={handleSignUp} className="space-y-4">
+                    <FieldIcon icon={UserIcon} label="Full name" name="full_name" required maxLength={100} />
+                    <FieldIcon icon={Phone} label="Phone" name="phone" type="tel" required maxLength={20} />
+                    <FieldIcon icon={Mail} label="Email" name="email" type="email" required />
+                    <PasswordField label="Password" name="password" required minLength={6} maxLength={72} />
+                    <Button type="submit" className="w-full glow-primary h-11" disabled={loading}>
+                      {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Create account
+                    </Button>
+                  </form>
+                </TabsContent>
+              </Tabs>
+            </div>
+
+            <p className="mt-6 text-center text-xs text-muted-foreground">
               By continuing you agree to our terms and privacy policy.
             </p>
           </div>
@@ -164,6 +174,33 @@ function FieldIcon({ icon: Icon, label, name, ...props }: any) {
       <div className="relative">
         <Icon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input id={name} name={name} {...props} className="pl-10 h-11" />
+      </div>
+    </div>
+  );
+}
+
+function PasswordField({ label, name, ...props }: any) {
+  const [show, setShow] = useState(false);
+  return (
+    <div className="space-y-1.5">
+      <Label htmlFor={name} className="text-xs font-medium text-muted-foreground">{label}</Label>
+      <div className="relative">
+        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Input
+          id={name}
+          name={name}
+          type={show ? "text" : "password"}
+          {...props}
+          className="pl-10 pr-10 h-11"
+        />
+        <button
+          type="button"
+          onClick={() => setShow((v) => !v)}
+          aria-label={show ? "Hide password" : "Show password"}
+          className="absolute right-2 top-1/2 -translate-y-1/2 inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+        >
+          {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+        </button>
       </div>
     </div>
   );
