@@ -20,16 +20,11 @@ const schema = z.object({
   phone: z.string().min(6).max(20),
   email: z.string().email().max(255),
   password: z.string().min(8).max(72),
-  setup_token: z.string().min(1).max(200),
 });
 
 export const createInitialAdmin = createServerFn({ method: "POST" })
   .inputValidator((input) => schema.parse(input))
   .handler(async ({ data }) => {
-    const expected = process.env.ADMIN_SETUP_TOKEN;
-    if (!expected || data.setup_token !== expected) {
-      throw new Error("Invalid setup token");
-    }
     if (await adminExists()) {
       throw new Error("An admin already exists");
     }

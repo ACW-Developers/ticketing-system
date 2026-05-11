@@ -36,7 +36,6 @@ function SetupAdmin() {
           phone: String(fd.get("phone") ?? ""),
           email: String(fd.get("email") ?? ""),
           password: String(fd.get("password") ?? ""),
-          setup_token: String(fd.get("setup_token") ?? ""),
         },
       });
       toast.success("Admin created. You can sign in now.");
@@ -90,11 +89,6 @@ function SetupAdmin() {
             <div>
               <Label htmlFor="password">Password</Label>
               <Input id="password" name="password" type="password" required minLength={8} maxLength={72} />
-            </div>
-            <div>
-              <Label htmlFor="setup_token">Setup token</Label>
-              <Input id="setup_token" name="setup_token" type="password" required />
-              <p className="text-xs text-muted-foreground mt-1">Provided by the project owner. Required to authorize this one-time setup.</p>
             </div>
             <Button type="submit" className="w-full glow-primary" disabled={submitting}>
               {submitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Create admin
