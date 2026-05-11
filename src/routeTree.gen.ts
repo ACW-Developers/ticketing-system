@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SetupAdminRouteImport } from './routes/setup-admin'
 import { Route as MyTicketsRouteImport } from './routes/my-tickets'
 import { Route as EventsRouteImport } from './routes/events'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -20,6 +21,11 @@ import { Route as CheckoutSuccessRouteImport } from './routes/checkout.success'
 import { Route as AdminEventsRouteImport } from './routes/admin.events'
 import { Route as AdminAttendeesRouteImport } from './routes/admin.attendees'
 
+const SetupAdminRoute = SetupAdminRouteImport.update({
+  id: '/setup-admin',
+  path: '/setup-admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MyTicketsRoute = MyTicketsRouteImport.update({
   id: '/my-tickets',
   path: '/my-tickets',
@@ -77,6 +83,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/events': typeof EventsRouteWithChildren
   '/my-tickets': typeof MyTicketsRoute
+  '/setup-admin': typeof SetupAdminRoute
   '/admin/attendees': typeof AdminAttendeesRoute
   '/admin/events': typeof AdminEventsRoute
   '/checkout/success': typeof CheckoutSuccessRoute
@@ -88,6 +95,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/events': typeof EventsRouteWithChildren
   '/my-tickets': typeof MyTicketsRoute
+  '/setup-admin': typeof SetupAdminRoute
   '/admin/attendees': typeof AdminAttendeesRoute
   '/admin/events': typeof AdminEventsRoute
   '/checkout/success': typeof CheckoutSuccessRoute
@@ -101,6 +109,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/events': typeof EventsRouteWithChildren
   '/my-tickets': typeof MyTicketsRoute
+  '/setup-admin': typeof SetupAdminRoute
   '/admin/attendees': typeof AdminAttendeesRoute
   '/admin/events': typeof AdminEventsRoute
   '/checkout/success': typeof CheckoutSuccessRoute
@@ -115,6 +124,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/events'
     | '/my-tickets'
+    | '/setup-admin'
     | '/admin/attendees'
     | '/admin/events'
     | '/checkout/success'
@@ -126,6 +136,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/events'
     | '/my-tickets'
+    | '/setup-admin'
     | '/admin/attendees'
     | '/admin/events'
     | '/checkout/success'
@@ -138,6 +149,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/events'
     | '/my-tickets'
+    | '/setup-admin'
     | '/admin/attendees'
     | '/admin/events'
     | '/checkout/success'
@@ -151,11 +163,19 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   EventsRoute: typeof EventsRouteWithChildren
   MyTicketsRoute: typeof MyTicketsRoute
+  SetupAdminRoute: typeof SetupAdminRoute
   CheckoutSuccessRoute: typeof CheckoutSuccessRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/setup-admin': {
+      id: '/setup-admin'
+      path: '/setup-admin'
+      fullPath: '/setup-admin'
+      preLoaderRoute: typeof SetupAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/my-tickets': {
       id: '/my-tickets'
       path: '/my-tickets'
@@ -260,6 +280,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   EventsRoute: EventsRouteWithChildren,
   MyTicketsRoute: MyTicketsRoute,
+  SetupAdminRoute: SetupAdminRoute,
   CheckoutSuccessRoute: CheckoutSuccessRoute,
 }
 export const routeTree = rootRouteImport
