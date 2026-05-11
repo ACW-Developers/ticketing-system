@@ -9,12 +9,18 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as MyTicketsRouteImport } from './routes/my-tickets'
 import { Route as EventsRouteImport } from './routes/events'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as EventsIdRouteImport } from './routes/events.$id'
 import { Route as CheckoutSuccessRouteImport } from './routes/checkout.success'
 
+const MyTicketsRoute = MyTicketsRouteImport.update({
+  id: '/my-tickets',
+  path: '/my-tickets',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EventsRoute = EventsRouteImport.update({
   id: '/events',
   path: '/events',
@@ -45,6 +51,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/events': typeof EventsRouteWithChildren
+  '/my-tickets': typeof MyTicketsRoute
   '/checkout/success': typeof CheckoutSuccessRoute
   '/events/$id': typeof EventsIdRoute
 }
@@ -52,6 +59,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/events': typeof EventsRouteWithChildren
+  '/my-tickets': typeof MyTicketsRoute
   '/checkout/success': typeof CheckoutSuccessRoute
   '/events/$id': typeof EventsIdRoute
 }
@@ -60,19 +68,33 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/events': typeof EventsRouteWithChildren
+  '/my-tickets': typeof MyTicketsRoute
   '/checkout/success': typeof CheckoutSuccessRoute
   '/events/$id': typeof EventsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/events' | '/checkout/success' | '/events/$id'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/events'
+    | '/my-tickets'
+    | '/checkout/success'
+    | '/events/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/events' | '/checkout/success' | '/events/$id'
+  to:
+    | '/'
+    | '/auth'
+    | '/events'
+    | '/my-tickets'
+    | '/checkout/success'
+    | '/events/$id'
   id:
     | '__root__'
     | '/'
     | '/auth'
     | '/events'
+    | '/my-tickets'
     | '/checkout/success'
     | '/events/$id'
   fileRoutesById: FileRoutesById
@@ -81,11 +103,19 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
   EventsRoute: typeof EventsRouteWithChildren
+  MyTicketsRoute: typeof MyTicketsRoute
   CheckoutSuccessRoute: typeof CheckoutSuccessRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/my-tickets': {
+      id: '/my-tickets'
+      path: '/my-tickets'
+      fullPath: '/my-tickets'
+      preLoaderRoute: typeof MyTicketsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/events': {
       id: '/events'
       path: '/events'
@@ -139,6 +169,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
   EventsRoute: EventsRouteWithChildren,
+  MyTicketsRoute: MyTicketsRoute,
   CheckoutSuccessRoute: CheckoutSuccessRoute,
 }
 export const routeTree = rootRouteImport
