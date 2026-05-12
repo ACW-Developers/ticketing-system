@@ -2,8 +2,7 @@ import { createFileRoute, Link, useSearch } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { useServerFn } from "@tanstack/react-start";
-import { verifyPayment } from "@/lib/checkout.functions";
+import { supabase } from "@/integrations/supabase/client";
 import { CheckCircle2, Loader2, Ticket } from "lucide-react";
 import { toast } from "sonner";
 
@@ -14,20 +13,34 @@ export const Route = createFileRoute("/checkout/success")({
 
 function CheckoutSuccess() {
   const { session_id } = useSearch({ from: "/checkout/success" });
-  const verify = useServerFn(verifyPayment);
   const [state, setState] = useState<"verifying" | "paid" | "pending" | "error">("verifying");
   const [tickets, setTickets] = useState<any[]>([]);
 
   useEffect(() => {
     if (!session_id) { setState("error"); return; }
-    verify({ data: { sessionId: session_id } })
-      .then((res) => {
-        if (res.status === "paid") {
-          setTickets(res.tickets ?? []);
+    (async () => {
+      try {
+        const { data: sess } = await supabase.auth.getSession();
+        const token = sess.session?.access_token;
+        const res = await fetch("/api/verify", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+          body: JSON.stringify({ sessionId: session_id }),
+        });
+        if (!res.ok) throw new Error(await res.text());
+        const json = await res.json();
+        if (json.status === "paid") {
+          setTickets(json.tickets ?? []);
           setState("paid");
         } else setState("pending");
-      })
-      .catch((e) => { toast.error(e?.message ?? "Verification failed"); setState("error"); });
+      } catch (e: any) {
+        toast.error(e?.message ?? "Verification failed");
+        setState("error");
+      }
+    })();
   }, [session_id]);
 
   return (
