@@ -25,7 +25,7 @@ if (typeof window !== "undefined" && !(window as any).__serverFnAuthPatched) {
         }
       }
     } catch {
-      // ignore — fall through to original fetch
+      // ignore - fall through to original fetch
     }
     return origFetch(input as any, init);
   };

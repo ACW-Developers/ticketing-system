@@ -7,7 +7,7 @@ import { AdminSidebar, AdminTopbar } from "@/components/AdminSidebar";
 
 export const Route = createFileRoute("/admin")({
   component: AdminLayout,
-  head: () => ({ meta: [{ title: "Admin — Pulse" }] }),
+  head: () => ({ meta: [{ title: "Admin - Pulse" }] }),
 });
 
 function AdminLayout() {

@@ -8,7 +8,7 @@ import { Search, Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/events/")({
   component: EventsPage,
-  head: () => ({ meta: [{ title: "Events — Pulse" }, { name: "description", content: "Browse upcoming events and book tickets instantly." }] }),
+  head: () => ({ meta: [{ title: "Events - Pulse" }, { name: "description", content: "Browse upcoming events and book tickets instantly." }] }),
 });
 
 function EventsPage() {

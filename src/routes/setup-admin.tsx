@@ -11,7 +11,7 @@ import { toast } from "sonner";
 
 export const Route = createFileRoute("/setup-admin")({
   component: SetupAdmin,
-  head: () => ({ meta: [{ title: "Setup Admin — Pulse" }, { name: "robots", content: "noindex,nofollow" }] }),
+  head: () => ({ meta: [{ title: "Setup Admin - Pulse" }, { name: "robots", content: "noindex,nofollow" }] }),
 });
 
 function SetupAdmin() {

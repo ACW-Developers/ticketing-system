@@ -46,10 +46,10 @@ function AdminUsers() {
             {rows.map((p) => (
               <tr key={p.id} className="border-t border-border hover:bg-muted/20">
                 <td className="p-3">
-                  <div className="font-semibold">{p.full_name ?? "—"}</div>
+                  <div className="font-semibold">{p.full_name ?? "-"}</div>
                   <div className="text-xs text-muted-foreground">{p.email}</div>
                 </td>
-                <td className="p-3 text-muted-foreground">{p.phone ?? "—"}</td>
+                <td className="p-3 text-muted-foreground">{p.phone ?? "-"}</td>
                 <td className="p-3">
                   {p.roles.includes("admin") ? (
                     <span className="inline-flex items-center gap-1 rounded-full bg-primary/15 text-primary px-2 py-0.5 text-xs font-medium">

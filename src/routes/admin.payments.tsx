@@ -50,7 +50,7 @@ function AdminPayments() {
             {orders.map((o) => (
               <tr key={o.id} className="border-t border-border">
                 <td className="p-3 text-muted-foreground text-xs">{format(new Date(o.created_at), "MMM d, h:mm a")}</td>
-                <td className="p-3">{o.events?.title ?? "—"}</td>
+                <td className="p-3">{o.events?.title ?? "-"}</td>
                 <td className="p-3 font-semibold">${Number(o.total_amount).toFixed(2)}</td>
                 <td className="p-3">
                   <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${
@@ -59,7 +59,7 @@ function AdminPayments() {
                     "bg-destructive/15 text-destructive"
                   }`}>{o.status}</span>
                 </td>
-                <td className="p-3 font-mono text-[10px] text-muted-foreground truncate max-w-[200px]">{o.stripe_session_id ?? "—"}</td>
+                <td className="p-3 font-mono text-[10px] text-muted-foreground truncate max-w-[200px]">{o.stripe_session_id ?? "-"}</td>
               </tr>
             ))}
             {orders.length === 0 && <tr><td colSpan={5} className="p-10 text-center text-muted-foreground">No payments yet.</td></tr>}

@@ -55,7 +55,7 @@ export const createCheckout = createServerFn({ method: "POST" })
           currency: "usd",
           unit_amount: Math.round(unit * 100),
           product_data: {
-            name: `${event.title} — ${labelMap[it.type]}`,
+            name: `${event.title} - ${labelMap[it.type]}`,
             description: event.venue,
           },
         },
