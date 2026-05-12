@@ -9,7 +9,7 @@ import QRCode from "qrcode";
 
 export const Route = createFileRoute("/my-tickets")({
   component: MyTickets,
-  head: () => ({ meta: [{ title: "My Tickets — Pulse" }] }),
+  head: () => ({ meta: [{ title: "My Tickets - Smarticketing" }] }),
 });
 
 function MyTickets() {

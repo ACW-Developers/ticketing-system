@@ -15,7 +15,7 @@ import logo from "@/assets/logo.png";
 
 export const Route = createFileRoute("/auth")({
   component: Auth,
-  head: () => ({ meta: [{ title: "Sign in — Pulse Tickets" }] }),
+  head: () => ({ meta: [{ title: "Sign in - Smarticketing" }] }),
 });
 
 const signInSchema = z.object({ email: z.string().email(), password: z.string().min(6) });
@@ -69,7 +69,7 @@ function Auth() {
     });
     setLoading(false);
     if (error) return toast.error(error.message);
-    toast.success("Account created — signing you in…");
+    toast.success("Account created - signing you in…");
     await supabase.auth.signInWithPassword({ email: parsed.data.email, password: parsed.data.password });
   }
 
@@ -84,8 +84,10 @@ function Auth() {
         <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/75 via-black/40 to-transparent" />
         <div className="relative h-full flex flex-col justify-between p-12 text-white">
           <div className="flex items-center gap-2.5">
-            <img src={logo} alt="" className="h-9 w-9 rounded-lg bg-white/90 p-1" />
-            <span className="font-display text-xl font-bold">Pulse.</span>
+            <div className="h-10 w-10 rounded-xl bg-black/70 backdrop-blur ring-1 ring-white/20 flex items-center justify-center shadow-lg">
+              <img src={logo} alt="" className="h-7 w-7 rounded-md" />
+            </div>
+            <span className="font-display text-xl font-bold drop-shadow-lg">Smarticketing</span>
           </div>
           <div className="space-y-4 max-w-md">
             <div className="inline-flex items-center gap-1.5 rounded-full bg-white/20 backdrop-blur px-3 py-1 text-xs font-medium">
@@ -113,11 +115,11 @@ function Auth() {
           <div className="w-full max-w-md">
             {/* Logo above the form */}
             <div className="flex flex-col items-center mb-6">
-              <div className="h-16 w-16 rounded-2xl bg-background border border-border shadow-sm flex items-center justify-center mb-3">
-                <img src={logo} alt="Pulse Tickets" className="h-10 w-10 rounded-lg" />
+              <div className="h-16 w-16 rounded-2xl bg-foreground shadow-lg flex items-center justify-center mb-3 ring-1 ring-border">
+                <img src={logo} alt="Smarticketing" className="h-10 w-10 rounded-lg" />
               </div>
               <span className="font-display text-2xl font-bold tracking-tight">
-                Pulse<span className="text-primary">.</span>
+                Smarticketing<span className="text-primary">.</span>
               </span>
             </div>
 

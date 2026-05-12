@@ -80,7 +80,7 @@ function Dashboard() {
 
       <div className="grid lg:grid-cols-2 gap-6">
         <div className="surface-card rounded-xl p-6">
-          <h3 className="font-display text-lg font-semibold mb-1">Sales — last 7 days</h3>
+          <h3 className="font-display text-lg font-semibold mb-1">Sales - last 7 days</h3>
           <p className="text-xs text-muted-foreground mb-4">Tickets issued per day</p>
           <div className="h-64">
             <ResponsiveContainer>

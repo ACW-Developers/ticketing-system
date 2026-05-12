@@ -2,10 +2,11 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { useServerFn } from "@tanstack/react-start";
-import { createCheckout } from "@/lib/checkout.functions";
 import { Calendar, MapPin, Loader2, Minus, Plus, ArrowLeft } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
@@ -25,11 +26,12 @@ function EventDetail() {
   const { id } = Route.useParams();
   const { user } = useAuth();
   const nav = useNavigate();
-  const checkout = useServerFn(createCheckout);
   const [event, setEvent] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [qty, setQty] = useState<Record<string, number>>({ children: 0, regular: 0, vip: 0, vvip: 0 });
   const [submitting, setSubmitting] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
+  const [contact, setContact] = useState({ name: "", email: "", phone: "" });
 
   useEffect(() => {
     supabase.from("events").select("*").eq("id", id).maybeSingle().then(({ data }) => {
@@ -37,6 +39,19 @@ function EventDetail() {
       setLoading(false);
     });
   }, [id]);
+
+  // Prefill contact from profile
+  useEffect(() => {
+    if (!user) return;
+    supabase.from("profiles").select("full_name, phone, email").eq("user_id", user.id).maybeSingle()
+      .then(({ data }) => {
+        setContact({
+          name: data?.full_name ?? "",
+          email: data?.email ?? user.email ?? "",
+          phone: data?.phone ?? "",
+        });
+      });
+  }, [user]);
 
   function priceFor(t: string) { return Number(event?.[`price_${t}`] ?? 0); }
   function maxFor(t: string) { return Number(event?.[`qty_${t}`] ?? 0); }
@@ -50,16 +65,35 @@ function EventDetail() {
     });
   }
 
-  async function handleCheckout() {
+  function startCheckout() {
     if (!user) { nav({ to: "/auth" }); return; }
     if (totalQty === 0) return toast.error("Select at least one ticket");
+    setContactOpen(true);
+  }
+
+  async function confirmCheckout() {
+    if (!contact.name.trim() || !contact.email.trim() || !contact.phone.trim()) {
+      return toast.error("Please fill in all contact details");
+    }
     setSubmitting(true);
     try {
-      const items = TYPES
-        .filter((t) => qty[t.key] > 0)
-        .map((t) => ({ type: t.key, quantity: qty[t.key] }));
-      const res = await checkout({ data: { eventId: id, origin: window.location.origin, items } });
-      if (res.url) window.location.href = res.url;
+      const items = TYPES.filter((t) => qty[t.key] > 0).map((t) => ({ type: t.key, quantity: qty[t.key] }));
+      const { data: sess } = await supabase.auth.getSession();
+      const token = sess.session?.access_token;
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ eventId: id, origin: window.location.origin, items, attendee: contact }),
+      });
+      if (!res.ok) {
+        const msg = await res.text();
+        throw new Error(msg || "Checkout failed");
+      }
+      const json = await res.json();
+      if (json.url) window.location.href = json.url;
     } catch (e: any) {
       toast.error(e?.message ?? "Checkout failed");
       setSubmitting(false);
@@ -128,14 +162,43 @@ function EventDetail() {
                 <span className="font-display text-2xl font-bold">${total.toFixed(2)}</span>
               </div>
 
-              <Button className="w-full mt-4 glow-primary h-11" disabled={submitting || totalQty === 0} onClick={handleCheckout}>
-                {submitting ? <Loader2 className="animate-spin h-4 w-4" /> : user ? "Checkout" : "Sign in to checkout"}
+              <Button className="w-full mt-4 glow-primary h-11" disabled={submitting || totalQty === 0} onClick={startCheckout}>
+                {user ? "Continue to checkout" : "Sign in to checkout"}
               </Button>
               <p className="text-xs text-muted-foreground text-center mt-3">Secure payment by Stripe</p>
             </div>
           </aside>
         </div>
       </div>
+
+      <Dialog open={contactOpen} onOpenChange={(o) => !submitting && setContactOpen(o)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Attendee contact details</DialogTitle>
+            <DialogDescription>We'll send tickets and updates to this contact.</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-3 py-2">
+            <div className="space-y-1.5">
+              <Label htmlFor="c-name">Full name</Label>
+              <Input id="c-name" value={contact.name} onChange={(e) => setContact({ ...contact, name: e.target.value })} />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="c-email">Email</Label>
+              <Input id="c-email" type="email" value={contact.email} onChange={(e) => setContact({ ...contact, email: e.target.value })} />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="c-phone">Phone</Label>
+              <Input id="c-phone" type="tel" value={contact.phone} onChange={(e) => setContact({ ...contact, phone: e.target.value })} />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setContactOpen(false)} disabled={submitting}>Cancel</Button>
+            <Button onClick={confirmCheckout} disabled={submitting} className="glow-primary">
+              {submitting ? <Loader2 className="animate-spin h-4 w-4" /> : `Pay $${total.toFixed(2)}`}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Layout>
   );
 }

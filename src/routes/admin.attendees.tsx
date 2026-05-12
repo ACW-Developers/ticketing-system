@@ -77,10 +77,10 @@ function Attendees() {
               <tr key={t.id} className="border-t border-border">
                 <td className="p-3 font-mono text-xs">{t.ticket_number}</td>
                 <td className="p-3 capitalize">{t.ticket_type}</td>
-                <td className="p-3">{t.attendee_name ?? "—"}</td>
+                <td className="p-3">{t.attendee_name ?? "-"}</td>
                 <td className="p-3 text-muted-foreground text-xs">{t.attendee_email}<br/>{t.attendee_phone}</td>
                 <td className="p-3">${Number(t.price).toFixed(2)}</td>
-                <td className="p-3"><span className="rounded-full bg-primary/15 text-primary px-2 py-0.5 text-xs">{t.orders?.status ?? "—"}</span></td>
+                <td className="p-3"><span className="rounded-full bg-primary/15 text-primary px-2 py-0.5 text-xs">{t.orders?.status ?? "-"}</span></td>
               </tr>
             ))}
             {tickets.length === 0 && <tr><td colSpan={6} className="p-10 text-center text-muted-foreground">No tickets sold yet.</td></tr>}

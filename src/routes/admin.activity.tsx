@@ -19,8 +19,8 @@ function ActivityLog() {
       ]);
       const events: any[] = [];
       for (const p of profiles ?? []) events.push({ type: "signup", at: p.created_at, label: `${p.full_name ?? p.email} signed up`, icon: UserPlus });
-      for (const t of tickets ?? []) events.push({ type: "ticket", at: t.created_at, label: `Ticket issued — ${t.ticket_type.toUpperCase()} for ${t.events?.title ?? "event"}`, icon: Ticket });
-      for (const o of orders ?? []) events.push({ type: "order", at: o.created_at, label: `Order ${o.status} — $${Number(o.total_amount).toFixed(2)} (${o.events?.title ?? "event"})`, icon: CreditCard });
+      for (const t of tickets ?? []) events.push({ type: "ticket", at: t.created_at, label: `Ticket issued - ${t.ticket_type.toUpperCase()} for ${t.events?.title ?? "event"}`, icon: Ticket });
+      for (const o of orders ?? []) events.push({ type: "order", at: o.created_at, label: `Order ${o.status} - $${Number(o.total_amount).toFixed(2)} (${o.events?.title ?? "event"})`, icon: CreditCard });
       events.sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime());
       setItems(events.slice(0, 50));
       setLoading(false);

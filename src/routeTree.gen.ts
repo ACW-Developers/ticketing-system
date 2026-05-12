@@ -18,6 +18,8 @@ import { Route as EventsIndexRouteImport } from './routes/events.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as EventsIdRouteImport } from './routes/events.$id'
 import { Route as CheckoutSuccessRouteImport } from './routes/checkout.success'
+import { Route as ApiVerifyRouteImport } from './routes/api/verify'
+import { Route as ApiCheckoutRouteImport } from './routes/api/checkout'
 import { Route as AdminUsersRouteImport } from './routes/admin.users'
 import { Route as AdminTrafficRouteImport } from './routes/admin.traffic'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
@@ -71,6 +73,16 @@ const EventsIdRoute = EventsIdRouteImport.update({
 const CheckoutSuccessRoute = CheckoutSuccessRouteImport.update({
   id: '/checkout/success',
   path: '/checkout/success',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiVerifyRoute = ApiVerifyRouteImport.update({
+  id: '/api/verify',
+  path: '/api/verify',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCheckoutRoute = ApiCheckoutRouteImport.update({
+  id: '/api/checkout',
+  path: '/api/checkout',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminUsersRoute = AdminUsersRouteImport.update({
@@ -134,6 +146,8 @@ export interface FileRoutesByFullPath {
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/traffic': typeof AdminTrafficRoute
   '/admin/users': typeof AdminUsersRoute
+  '/api/checkout': typeof ApiCheckoutRoute
+  '/api/verify': typeof ApiVerifyRoute
   '/checkout/success': typeof CheckoutSuccessRoute
   '/events/$id': typeof EventsIdRoute
   '/admin/': typeof AdminIndexRoute
@@ -153,6 +167,8 @@ export interface FileRoutesByTo {
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/traffic': typeof AdminTrafficRoute
   '/admin/users': typeof AdminUsersRoute
+  '/api/checkout': typeof ApiCheckoutRoute
+  '/api/verify': typeof ApiVerifyRoute
   '/checkout/success': typeof CheckoutSuccessRoute
   '/events/$id': typeof EventsIdRoute
   '/admin': typeof AdminIndexRoute
@@ -174,6 +190,8 @@ export interface FileRoutesById {
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/traffic': typeof AdminTrafficRoute
   '/admin/users': typeof AdminUsersRoute
+  '/api/checkout': typeof ApiCheckoutRoute
+  '/api/verify': typeof ApiVerifyRoute
   '/checkout/success': typeof CheckoutSuccessRoute
   '/events/$id': typeof EventsIdRoute
   '/admin/': typeof AdminIndexRoute
@@ -196,6 +214,8 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/admin/traffic'
     | '/admin/users'
+    | '/api/checkout'
+    | '/api/verify'
     | '/checkout/success'
     | '/events/$id'
     | '/admin/'
@@ -215,6 +235,8 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/admin/traffic'
     | '/admin/users'
+    | '/api/checkout'
+    | '/api/verify'
     | '/checkout/success'
     | '/events/$id'
     | '/admin'
@@ -235,6 +257,8 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/admin/traffic'
     | '/admin/users'
+    | '/api/checkout'
+    | '/api/verify'
     | '/checkout/success'
     | '/events/$id'
     | '/admin/'
@@ -247,6 +271,8 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   MyTicketsRoute: typeof MyTicketsRoute
   SetupAdminRoute: typeof SetupAdminRoute
+  ApiCheckoutRoute: typeof ApiCheckoutRoute
+  ApiVerifyRoute: typeof ApiVerifyRoute
   CheckoutSuccessRoute: typeof CheckoutSuccessRoute
   EventsIdRoute: typeof EventsIdRoute
   EventsIndexRoute: typeof EventsIndexRoute
@@ -315,6 +341,20 @@ declare module '@tanstack/react-router' {
       path: '/checkout/success'
       fullPath: '/checkout/success'
       preLoaderRoute: typeof CheckoutSuccessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/verify': {
+      id: '/api/verify'
+      path: '/api/verify'
+      fullPath: '/api/verify'
+      preLoaderRoute: typeof ApiVerifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/checkout': {
+      id: '/api/checkout'
+      path: '/api/checkout'
+      fullPath: '/api/checkout'
+      preLoaderRoute: typeof ApiCheckoutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/users': {
@@ -417,6 +457,8 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   MyTicketsRoute: MyTicketsRoute,
   SetupAdminRoute: SetupAdminRoute,
+  ApiCheckoutRoute: ApiCheckoutRoute,
+  ApiVerifyRoute: ApiVerifyRoute,
   CheckoutSuccessRoute: CheckoutSuccessRoute,
   EventsIdRoute: EventsIdRoute,
   EventsIndexRoute: EventsIndexRoute,

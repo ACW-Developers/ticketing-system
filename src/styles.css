@@ -54,7 +54,7 @@
 :root {
   --radius: 0.75rem;
 
-  /* Green Juice — light theme default */
+  /* Green Juice - light theme default */
   --background: oklch(0.99 0.005 130);
   --foreground: oklch(0.20 0.03 150);
 
