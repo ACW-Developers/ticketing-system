@@ -7,7 +7,7 @@ export function Logo({ size = 36, withText = true }: { size?: number; withText?:
       <img src={logo} alt="Smarticketing" width={size} height={size} className="rounded-lg" style={{ filter: "hue-rotate(220deg) saturate(1.4)" }} />
       {withText && (
         <span className="font-display text-xl font-bold tracking-tight">
-          Pulse<span className="text-primary">.</span>
+          Smarticketing<span className="text-primary">.</span>
         </span>
       )}
     </Link>

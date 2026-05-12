@@ -117,7 +117,7 @@ function Auth() {
                 <img src={logo} alt="Smarticketing" className="h-10 w-10 rounded-lg" />
               </div>
               <span className="font-display text-2xl font-bold tracking-tight">
-                Pulse<span className="text-primary">.</span>
+                Smarticketing<span className="text-primary">.</span>
               </span>
             </div>
 
